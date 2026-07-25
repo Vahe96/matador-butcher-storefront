@@ -30,10 +30,10 @@ export function usePageMeta(page) {
   }, [page])
 }
 
-function PageHero({ eyebrow, title, copy, image, children, compact = false }) {
-  const [imageWidth, imageHeight] = image?.includes('/box-') ? [1200, 900] : [1920, 1080]
+function PageHero({ eyebrow, title, copy, image, imageAlt = '', children, compact = false }) {
+  const [imageWidth, imageHeight] = image?.includes('/box-') ? [1200, 900] : image?.includes('/restaurant-') ? [1536, 1024] : [1920, 1080]
   return <section className={`page-hero ${compact ? 'page-hero-compact' : ''}`}>
-    {image && <img src={assetPath(image)} width={imageWidth} height={imageHeight} alt="" fetchPriority="high" />}
+    {image && <img src={assetPath(image)} width={imageWidth} height={imageHeight} alt={imageAlt} fetchPriority="high" />}
     <div className="page-hero-shade" />
     <div className="shell page-hero-copy"><p className="eyebrow light">{eyebrow}</p><h1>{title}</h1><p>{copy}</p>{children}</div>
   </section>
@@ -174,10 +174,49 @@ function RequestForm({ business = false }) {
 }
 
 export function BusinessPage() {
+  const partnershipStages = [
+    {
+      number: '01',
+      label: 'Համաձայնեցում',
+      title: 'Սկսում ենք ձեր ճաշացանկից',
+      copy: 'Շեֆի հետ ճշտում ենք ուտեստը, ցանկալի հատվածը, ճարպայնությունն ու մշակման աստիճանը։ Այսպես առաջարկը կառուցվում է կիրառությունից, ոչ թե պատահական տեսականուց։',
+      image: '/images/restaurant-consultation.avif',
+      smallImage: '/images/restaurant-consultation-sm.webp',
+      alt: 'Շեֆ-խոհարարն ու մսագործը ռեստորանի խոհանոցում քննարկում են տավարի կտրվածքը',
+      points: ['Ուտեստ և պատրաստման եղանակ', 'Կտրվածք ու ճարպայնություն', 'Փորձնական քանակ'],
+    },
+    {
+      number: '02',
+      label: 'Պատրաստում',
+      title: 'Մեկ չափ՝ ամբողջ խմբաքանակի համար',
+      copy: 'Կտրվածքը բաժանվում, կշռվում և փաթեթավորվում է համաձայնեցված ձևաչափով, որպեսզի խոհանոցը ստանա պատրաստ աշխատանքի, ոչ թե նորից մշակելու նյութ։',
+      image: '/images/restaurant-portions.avif',
+      smallImage: '/images/restaurant-portions-sm.webp',
+      alt: 'Մսագործը կշռում և միատեսակ չափաբաժիններով փաթեթավորում է ռեստորանի համար նախատեսված միսը',
+      points: ['Բաժնային կամ ընդհանուր քաշ', 'Մշակման համաձայնեցված աստիճան', 'Փաթեթավորման ձևաչափ'],
+    },
+    {
+      number: '03',
+      label: 'Մատակարարում',
+      title: 'Գրաֆիկ, որը հարմար է խոհանոցին',
+      copy: 'Փորձնական փուլից հետո ամրագրում ենք մատակարարման օրերը, մոտավոր ծավալը և մեկ պատասխանատու կապը՝ ամեն պատվերի ժամանակ նույն շղթան չկրկնելու համար։',
+      image: '/images/restaurant-delivery.avif',
+      smallImage: '/images/restaurant-delivery-sm.webp',
+      alt: 'Ռեստորանի շեֆը ստուգում է սառը տարաներով մատակարարված, փաթեթավորված մսի խմբաքանակը',
+      points: ['Համաձայնեցված օրեր', 'Պլանավորված ծավալ', 'Մեկ պատասխանատու կապ'],
+    },
+  ]
   return <>
-    <PageHero eyebrow="Matador for business" title="Կայուն մատակարարում՝ ձեր խոհանոցի ռիթմով" copy="Համաձայնեցված կտրվածք, ճշգրիտ քաշ և կանխատեսելի գրաֆիկ՝ մեկ պատասխանատու կապով։" image="/images/hero-butcher.avif"><a className="button button-brass" href="#business-form">Քննարկել մատակարարումը <ArrowDown /></a></PageHero>
-    <section className="section business-values"><div className="shell"><SectionHeading eyebrow="B2B մոտեցում" title={<>Ձեր տեխնոլոգիական քարտը <em>պահանջում է ճշտություն</em></>} copy="Առաջարկը կառուցվում է ձեր ցանկալի կտրվածքի, ճարպայնության, փաթեթավորման ու պարբերականության շուրջ։" /><div className="value-grid"><div className="reveal"><Scale /><h3>Ճշգրիտ քաշ</h3><p>Փաթեթավորման և բաժնային քաշի համաձայնեցված ձևաչափ։</p></div><div className="reveal"><ChefHat /><h3>Կրկնվող կտրվածք</h3><p>Խոհանոցի համար կանխատեսելի չափ և մշակման աստիճան։</p></div><div className="reveal"><Clock3 /><h3>Պարբերականություն</h3><p>Ձեր ռիթմին համապատասխան օրերի ու ծավալների պլանավորում։</p></div><div className="reveal"><Handshake /><h3>Մեկ պատասխանատու կապ</h3><p>Հարցերից մինչև պատվերի ճշտում՝ առանց ավելորդ շղթայի։</p></div></div></div></section>
-    <section className="business-process"><div className="shell"><p className="eyebrow light">Ինչպես է սկսվում</p><h2>Չորս քայլ դեպի մշտական մատակարարում</h2><ol><li><span>01</span><strong>Հայտ</strong><p>Նշում եք անհրաժեշտ տեսակներն ու ծավալը։</p></li><li><span>02</span><strong>Ճշտում</strong><p>Համաձայնեցնում ենք կտրվածքն ու փաթեթավորումը։</p></li><li><span>03</span><strong>Փորձնական փուլ</strong><p>Ստուգում եք արտադրանքը ձեր խոհանոցում։</p></li><li><span>04</span><strong>Գրաֆիկ</strong><p>Սահմանում ենք կրկնվող մատակարարման ռիթմը։</p></li></ol></div></section>
+    <PageHero eyebrow="Matador for business" title="Միսը հասնում է խոհանոց՝ արդեն ձեր ձևաչափով" copy="Կտրվածքը, բաժնային քաշը, փաթեթավորումը և մատակարարման օրերը համաձայնեցնում ենք ձեր ճաշացանկի ու աշխատանքի ռիթմի շուրջ։" image="/images/restaurant-consultation.avif" imageAlt="Շեֆ-խոհարարն ու Matador-ի մսագործը քննարկում են ռեստորանի համար նախատեսված կտրվածքը"><a className="button button-brass" href="#business-form">Քննարկել մատակարարումը <ArrowDown /></a></PageHero>
+    <section className="business-quick-facts" aria-label="Ռեստորանային մատակարարման հիմնական պայմանները"><div className="shell"><span><Scale />Ճշգրիտ քաշ</span><span><ChefHat />Կտրվածք՝ ըստ ուտեստի</span><span><PackageCheck />Հարմար փաթեթավորում</span><span><Clock3 />Պլանավորված օրեր</span></div></section>
+    <section className="section business-story" id="business-process"><div className="shell">
+      <SectionHeading eyebrow="Մեկ պատվերի ճանապարհը" title={<>Պահանջից մինչև <em>խոհանոց</em></>} copy="Երեք պարզ փուլով տեսեք՝ ինչն ենք համաձայնեցնում, ինչ է պատրաստվում և ինչ ձևաչափով է հասնում ձեր թիմին։" />
+      <div className="business-story-list">{partnershipStages.map((stage, index) => <article className="business-story-card reveal" key={stage.number}>
+        <picture><source media="(max-width: 700px)" srcSet={assetPath(stage.smallImage)} /><img src={assetPath(stage.image)} width="1536" height="1024" loading="lazy" alt={stage.alt} /></picture>
+        <div className="business-story-copy"><div className="business-story-index"><span>{stage.number}</span><small>{stage.label}</small></div><h2>{stage.title}</h2><p>{stage.copy}</p><ul>{stage.points.map(point => <li key={point}><Check />{point}</li>)}</ul>{index === 0 && <a href="#business-form">Նկարագրել ձեր պահանջը <ArrowRight /></a>}</div>
+      </article>)}</div>
+    </div></section>
+    <section className="business-fit"><div className="shell business-fit-grid"><div className="reveal"><p className="eyebrow light">Ում համար է</p><h2>Երբ նույն ուտեստը պետք է ամեն անգամ նույնը ստացվի</h2><p>Հարմար է այն խոհանոցներին, որտեղ կտրվածքի չափը, մշակման աստիճանն ու մատակարարման ժամանակը անմիջապես ազդում են արագության և վերջնական ափսեի վրա։</p></div><div className="business-fit-cards"><article className="reveal"><ChefHat /><span><strong>À la carte</strong>Բաժնային քաշ և կրկնվող կտրվածք</span></article><article className="reveal"><Flame /><span><strong>Գրիլ և սթեյք</strong>Ընտրված հատված ու ճարպայնություն</span></article><article className="reveal"><Building2 /><span><strong>Հյուրանոց և catering</strong>Նախապես պլանավորված խմբաքանակ</span></article><article className="reveal"><Snowflake /><span><strong>Կայուն պահեստավորում</strong>Համաձայնեցված փաթեթավորման ձև</span></article></div></div></section>
     <section className="section business-form-section" id="business-form"><div className="shell form-layout"><div><p className="eyebrow">Մատակարարման հայտ</p><h2>Պատմեք ձեր խոհանոցի պահանջների մասին</h2><p>Նշեք ցանկալի կտրվածքները, մոտավոր շաբաթական ծավալը և մատակարարման հաճախականությունը՝ համապատասխան առաջարկ կառուցելու համար։</p></div><RequestForm business /></div></section>
   </>
 }

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vahe96.github.io/matador-butcher-storefront/sitemap.xml
